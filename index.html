@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bar La Hora del Puerto — Carta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --ink:#1C2B39;
+    --cream:#FAF6EE;
+    --paper:#FFFDF8;
+    --gold:#AD8A3E;
+    --gold-deep:#7C6329;
+    --line:#E2D8C3;
+    --navy-deep:#12212F;
+    --muted:#6B7280;
+    --tag-bg:#F0E9D8;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#F3EEE2;
+      --cream:#0F1B24;
+      --paper:#152634;
+      --gold:#D9B865;
+      --gold-deep:#E8CC8B;
+      --line:#2C3E4C;
+      --navy-deep:#0A141C;
+      --muted:#9AA7B0;
+      --tag-bg:#1E3140;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#F3EEE2;
+    --cream:#0F1B24;
+    --paper:#152634;
+    --gold:#D9B865;
+    --gold-deep:#E8CC8B;
+    --line:#2C3E4C;
+    --navy-deep:#0A141C;
+    --muted:#9AA7B0;
+    --tag-bg:#1E3140;
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  *{box-sizing:border-box;}
+  html,body{height:auto;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s ease, color .3s ease;
+  }
+  img{max-width:100%;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    padding:calc(env(safe-area-inset-top,0px) + 10px) 18px 10px;
+    display:flex; justify-content:flex-end; gap:8px;
+    background:linear-gradient(var(--cream) 78%, transparent);
+  }
+  .lang-switch{
+    display:inline-flex; border:1px solid var(--line); border-radius:999px;
+    overflow:hidden; background:var(--paper);
+  }
+  .lang-switch button{
+    border:none; background:transparent; cursor:pointer;
+    font-family:'Work Sans', sans-serif; font-size:13px; font-weight:600;
+    padding:7px 14px; color:var(--muted); letter-spacing:.02em;
+    transition:background .2s, color .2s;
+  }
+  .lang-switch button.active{ background:var(--gold); color:#fff; }
+  :root[data-theme="dark"] .lang-switch button.active,
+  @media (prefers-color-scheme: dark){ .lang-switch button.active{ color:#12212F; } }
+
+  /* ---------- header ---------- */
+  header.hero{
+    text-align:center; padding:6px 24px 28px;
+  }
+  .eyebrow{
+    font-size:12.5px; letter-spacing:.28em; color:var(--gold-deep);
+    font-weight:600; margin:0 0 6px;
+  }
+  .wordmark{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(38px, 9vw, 58px); color:var(--gold); margin:0;
+    line-height:1;
+  }
+  .wordmark svg{ width:0.72em; height:0.72em; flex:none; }
+  .subline{
+    font-family:'Fraunces', serif; font-weight:500; letter-spacing:.18em;
+    font-size:15px; color:var(--ink); margin-top:10px; text-transform:uppercase;
+  }
+  .tagline{
+    color:var(--muted); font-size:14.5px; margin-top:14px; max-width:420px;
+    margin-left:auto; margin-right:auto; line-height:1.55;
+  }
+
+  .wave{ display:block; width:100%; height:22px; color:var(--gold); opacity:.55; }
+
+  /* ---------- menu ---------- */
+  main{ max-width:640px; margin:0 auto; padding:8px 22px 40px; }
+  .category{ padding:38px 0 10px; }
+  .category:first-of-type{ padding-top:18px; }
+  .category-head{ text-align:center; margin-bottom:22px; }
+  .category-head h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:26px;
+    margin:0; color:var(--ink); letter-spacing:.01em;
+  }
+  .category-head .sub{
+    display:block; font-size:13px; color:var(--gold-deep); margin-top:4px;
+    font-weight:500;
+  }
+  .dish{
+    display:flex; justify-content:space-between; align-items:baseline;
+    gap:14px; padding:13px 0; border-bottom:1px solid var(--line);
+  }
+  .dish:last-child{ border-bottom:none; }
+  .dish-name{
+    font-family:'Fraunces', serif; font-weight:500; font-size:18px;
+    color:var(--ink); line-height:1.3;
+  }
+  .dish-desc{
+    display:block; font-family:'Work Sans', sans-serif; font-weight:400;
+    font-size:13.5px; color:var(--muted); margin-top:3px; line-height:1.5;
+  }
+  .tags{ margin-top:6px; display:flex; flex-wrap:wrap; gap:6px; }
+  .tag{
+    font-size:10.5px; color:var(--gold-deep); background:var(--tag-bg);
+    padding:2px 8px; border-radius:999px; font-weight:600; letter-spacing:.01em;
+  }
+  .price{
+    font-family:'Fraunces', serif; font-weight:500; font-size:17px;
+    color:var(--gold-deep); white-space:nowrap; flex:none;
+  }
+  .divider{
+    border:none; border-top:1px solid var(--line); margin:0; width:60%;
+    margin-left:auto; margin-right:auto;
+  }
+
+  .note{
+    text-align:center; font-family:'Fraunces', serif; font-style:italic;
+    font-size:15px; color:var(--ink); margin:36px 0 4px; padding:0 10px;
+  }
+
+  /* ---------- QR section ---------- */
+  .qr-section{
+    background:var(--navy-deep); color:#F3EEE2; margin-top:44px;
+    padding:46px 22px 54px; text-align:center;
+  }
+  .qr-section h3{
+    font-family:'Fraunces', serif; font-weight:500; font-style:italic;
+    font-size:24px; margin:0 0 8px;
+  }
+  .qr-section p{
+    font-size:13.5px; color:#B7C2CA; max-width:360px; margin:0 auto 24px;
+    line-height:1.6;
+  }
+  #qrcode{
+    display:inline-flex; padding:14px; background:#fff; border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+  #qrcode img, #qrcode canvas{ display:block; border-radius:4px; }
+  .qr-actions{ margin-top:22px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    font-family:'Work Sans', sans-serif; font-weight:600; font-size:13.5px;
+    padding:11px 20px; border-radius:999px; cursor:pointer; border:1px solid #374A57;
+    background:transparent; color:#F3EEE2; letter-spacing:.01em;
+  }
+  .btn.primary{ background:var(--gold); border-color:var(--gold); color:#12212F; }
+
+  footer{
+    text-align:center; padding:22px; font-size:12px; color:var(--muted);
+  }
+
+  /* ---------- print card (hidden on screen) ---------- */
+  #print-card{ display:none; }
+  @media print{
+    body *{ visibility:hidden; }
+    #print-card, #print-card *{ visibility:visible; }
+    #print-card{
+      display:flex; position:fixed; inset:0; margin:0;
+      flex-direction:column; align-items:center; justify-content:center;
+      background:#fff; gap:22px;
+    }
+    #print-card .pc-word{
+      font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+      font-size:40px; color:#AD8A3E;
+    }
+    #print-card .pc-sub{
+      font-family:'Fraunces', serif; letter-spacing:.18em; font-size:13px;
+      text-transform:uppercase; color:#1C2B39;
+    }
+    #print-card .pc-qr{ padding:16px; }
+    #print-card .pc-line{
+      font-family:'Work Sans', sans-serif; font-size:14px; color:#1C2B39; margin-top:4px;
+    }
+  }
+
+  @media (max-width:420px){
+    .dish-name{ font-size:16.5px; }
+    .category-head h2{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="lang-switch" role="group" aria-label="Language / Idioma">
+    <button id="btn-es" class="active" onclick="setLang('es')">ES</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<header class="hero">
+  <p class="eyebrow">BAR</p>
+  <p class="wordmark">La
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"/>
+      <line x1="50" y1="50" x2="50" y2="26" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+      <line x1="50" y1="50" x2="68" y2="58" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    Hora</p>
+  <p class="subline">Del Puerto</p>
+  <p class="tagline" data-i18n="tagline">Cocina de mercado junto al mar. Croquetas, ensaladillas y ensaladas hechas cada día.</p>
+</header>
+
+<svg class="wave" viewBox="0 0 600 24" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 12 Q 25 2 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12 T 350 12 T 400 12 T 450 12 T 500 12 T 550 12 T 600 12" fill="none" stroke="currentColor" stroke-width="2"/>
+</svg>
+
+<main>
+
+  <!-- CROQUETAS -->
+  <section class="category">
+    <div class="category-head">
+      <h2 data-i18n="cat1.title">Croquetas</h2>
+      <span class="sub" data-i18n="cat1.sub">4 unidades · contienen gluten y lácteos</span>
+    </div>
+
+    <div class="dish"><span class="dish-name" data-i18n="d1.name">Rabo de toro</span><span class="price">4,50&nbsp;€</span></div>
+    <div class="dish"><span class="dish-name" data-i18n="d2.name">Carrillera al oporto</span><span class="price">4,50&nbsp;€</span></div>
+    <div class="dish"><span class="dish-name" data-i18n="d3.name">Secreto con miel</span><span class="price">4,50&nbsp;€</span></div>
+    <div class="dish"><span class="dish-name" data-i18n="d4.name">Puchero</span><span class="price">4,50&nbsp;€</span></div>
+    <div class="dish"><span class="dish-name" data-i18n="d5.name">Jamón ibérico</span><span class="price">4,50&nbsp;€</span></div>
+    <div class="dish"><span class="dish-name" data-i18n="d6.name">Setas</span><span class="price">4,50&nbsp;€</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SAQUITOS -->
+  <section class="category">
+    <div class="category-head">
+      <h2 data-i18n="cat2.title">Saquitos</h2>
+      <span class="sub" data-i18n="cat2.sub">3 unidades</span>
+    </div>
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d7.name">Camembert, con pistachos y confitura de tomate</span>
+        <span class="tags"><span class="tag" data-i18n="tag.gluten">Gluten</span><span class="tag" data-i18n="tag.dairy">Lácteos</span></span>
+      </span>
+      <span class="price">4,90&nbsp;€</span>
+    </div>
+    <div class="dish"><span class="dish-name" data-i18n="d8.name">Roquefort con nueces</span><span class="price">4,90&nbsp;€</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CRUJIENTES -->
+  <section class="category">
+    <div class="category-head">
+      <h2 data-i18n="cat3.title">Crujientes</h2>
+      <span class="sub" data-i18n="cat3.sub">3 unidades</span>
+    </div>
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d9.name">Bacon, queso crema, puerros</span>
+        <span class="tags"><span class="tag" data-i18n="tag.gluten">Gluten</span><span class="tag" data-i18n="tag.dairy">Lácteos</span></span>
+      </span>
+      <span class="price">5,00&nbsp;€</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ENSALADILLAS -->
+  <section class="category">
+    <div class="category-head">
+      <h2 data-i18n="cat4.title">Ensaladillas</h2>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d10.name">Rusa</span>
+        <span class="dish-desc" data-i18n="d10.desc">Patata, atún, zanahoria, huevo cocido, mahonesa.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.egg">Huevo</span><span class="tag" data-i18n="tag.fish">Pescado</span></span>
+      </span>
+      <span class="price">4,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d11.name">Pulpo</span>
+        <span class="dish-desc" data-i18n="d11.desc">Pulpo, patata, ajo, pimentón, mahonesa.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.egg">Huevo</span></span>
+      </span>
+      <span class="price">5,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d12.name">Papas aliñadas</span>
+        <span class="dish-desc" data-i18n="d12.desc">Patata, cebolla morada, huevo cocido, perejil.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.egg">Huevo</span><span class="tag" data-i18n="tag.sulfites">Sulfitos</span></span>
+      </span>
+      <span class="price">4,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d13.name">Marisco</span>
+        <span class="dish-desc" data-i18n="d13.desc">Gambas, palito de cangrejo, langosta, huevo cocido, mahonesa, salsa cóctel.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.egg">Huevo</span><span class="tag" data-i18n="tag.crustacean">Crustáceos</span><span class="tag" data-i18n="tag.sulfites">Sulfitos</span></span>
+      </span>
+      <span class="price">7,00&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d14.name">Salmorejo</span>
+        <span class="dish-desc" data-i18n="d14.desc">Recién hecho, con huevo cocido, jamón ibérico y balsámico de PX.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.gluten">Gluten</span><span class="tag" data-i18n="tag.egg">Huevo</span><span class="tag" data-i18n="tag.sulfites">Sulfitos</span></span>
+      </span>
+      <span class="price">4,90&nbsp;€</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ENSALADAS -->
+  <section class="category">
+    <div class="category-head">
+      <h2 data-i18n="cat5.title">Ensaladas</h2>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d15.name">De mango y salmón</span>
+        <span class="dish-desc" data-i18n="d15.desc">Mezcla de lechugas, mango, queso feta, salmón ahumado, coulis de mango y frutos rojos.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.fish">Pescado</span><span class="tag" data-i18n="tag.dairy">Lácteos</span></span>
+      </span>
+      <span class="price">9,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d16.name">De pollo</span>
+        <span class="dish-desc" data-i18n="d16.desc">Mezcla de lechugas, queso curado, pollo empanado, bacon, tomate, salsa cóctel, nueces, balsámico de PX.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.gluten">Gluten</span><span class="tag" data-i18n="tag.nuts">Frutos secos</span><span class="tag" data-i18n="tag.dairy">Lácteos</span><span class="tag" data-i18n="tag.egg">Huevo</span></span>
+      </span>
+      <span class="price">9,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d17.name">César</span>
+        <span class="dish-desc" data-i18n="d17.desc">Mezcla de lechugas, queso curado, pollo empanado, bacon, picatostes, salsa césar.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.gluten">Gluten</span><span class="tag" data-i18n="tag.dairy">Lácteos</span><span class="tag" data-i18n="tag.egg">Huevo</span></span>
+      </span>
+      <span class="price">9,50&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d18.name">De costra</span>
+        <span class="dish-desc" data-i18n="d18.desc">Mezcla de lechugas, ensaladilla rusa, ensaladilla de marisco, gambones en costra de maíz, mango, coulis de mango, salsa cóctel.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.crustacean">Crustáceos</span><span class="tag" data-i18n="tag.dairy">Lácteos</span><span class="tag" data-i18n="tag.egg">Huevo</span><span class="tag" data-i18n="tag.fish">Pescado</span></span>
+      </span>
+      <span class="price">11,00&nbsp;€</span>
+    </div>
+
+    <div class="dish">
+      <span>
+        <span class="dish-name" data-i18n="d19.name">Rulo de cabra y confitura de higos</span>
+        <span class="dish-desc" data-i18n="d19.desc">Mezcla de lechugas, rulo de cabra, mermelada de higos, mezcla de frutos secos.</span>
+        <span class="tags"><span class="tag" data-i18n="tag.nuts">Frutos secos</span><span class="tag" data-i18n="tag.peanuts">Cacahuetes</span></span>
+      </span>
+      <span class="price">7,00&nbsp;€</span>
+    </div>
+  </section>
+
+  <p class="note" data-i18n="footnote">Todos nuestros platos se elaboran diariamente, con productos frescos.</p>
+</main>
+
+<section class="qr-section">
+  <h3 data-i18n="qr.title">Llévate la carta contigo</h3>
+  <p data-i18n="qr.desc">Escanea este código con tu móvil para ver la carta en cualquier momento, en español o en inglés.</p>
+  <div id="qrcode"></div>
+  <div class="qr-actions">
+    <button class="btn primary" onclick="printTableCard()" data-i18n="qr.print">Imprimir cartel para la mesa</button>
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="footer.made">Bar La Hora del Puerto</span>
+</footer>
+
+<!-- Print-only table card -->
+<div id="print-card">
+  <div class="pc-word">La Hora</div>
+  <div class="pc-sub">Del Puerto</div>
+  <div class="pc-qr" id="qrcode-print"></div>
+  <div class="pc-line" id="print-line">Escanea para ver la carta · Scan for the menu</div>
+</div>
+
+<script>
+  const i18n = {
+    es:{
+      tagline:"Cocina de mercado junto al mar. Croquetas, ensaladillas y ensaladas hechas cada día.",
+      "cat1.title":"Croquetas","cat1.sub":"4 unidades · contienen gluten y lácteos",
+      "cat2.title":"Saquitos","cat2.sub":"3 unidades",
+      "cat3.title":"Crujientes","cat3.sub":"3 unidades",
+      "cat4.title":"Ensaladillas",
+      "cat5.title":"Ensaladas",
+      "d1.name":"Rabo de toro","d2.name":"Carrillera al oporto","d3.name":"Secreto con miel",
+      "d4.name":"Puchero","d5.name":"Jamón ibérico","d6.name":"Setas",
+      "d7.name":"Camembert, con pistachos y confitura de tomate","d8.name":"Roquefort con nueces",
+      "d9.name":"Bacon, queso crema, puerros",
+      "d10.name":"Rusa","d10.desc":"Patata, atún, zanahoria, huevo cocido, mahonesa.",
+      "d11.name":"Pulpo","d11.desc":"Pulpo, patata, ajo, pimentón, mahonesa.",
+      "d12.name":"Papas aliñadas","d12.desc":"Patata, cebolla morada, huevo cocido, perejil.",
+      "d13.name":"Marisco","d13.desc":"Gambas, palito de cangrejo, langosta, huevo cocido, mahonesa, salsa cóctel.",
+      "d14.name":"Salmorejo","d14.desc":"Recién hecho, con huevo cocido, jamón ibérico y balsámico de PX.",
+      "d15.name":"De mango y salmón","d15.desc":"Mezcla de lechugas, mango, queso feta, salmón ahumado, coulis de mango y frutos rojos.",
+      "d16.name":"De pollo","d16.desc":"Mezcla de lechugas, queso curado, pollo empanado, bacon, tomate, salsa cóctel, nueces, balsámico de PX.",
+      "d17.name":"César","d17.desc":"Mezcla de lechugas, queso curado, pollo empanado, bacon, picatostes, salsa césar.",
+      "d18.name":"De costra","d18.desc":"Mezcla de lechugas, ensaladilla rusa, ensaladilla de marisco, gambones en costra de maíz, mango, coulis de mango, salsa cóctel.",
+      "d19.name":"Rulo de cabra y confitura de higos","d19.desc":"Mezcla de lechugas, rulo de cabra, mermelada de higos, mezcla de frutos secos.",
+      "tag.gluten":"Gluten","tag.dairy":"Lácteos","tag.egg":"Huevo","tag.fish":"Pescado",
+      "tag.sulfites":"Sulfitos","tag.crustacean":"Crustáceos","tag.nuts":"Frutos secos","tag.peanuts":"Cacahuetes",
+      "footnote":"Todos nuestros platos se elaboran diariamente, con productos frescos.",
+      "qr.title":"Llévate la carta contigo",
+      "qr.desc":"Escanea este código con tu móvil para ver la carta en cualquier momento, en español o en inglés.",
+      "qr.print":"Imprimir cartel para la mesa",
+      "footer.made":"Bar La Hora del Puerto"
+    },
+    en:{
+      tagline:"Market-fresh cooking by the harbour. Croquettes, potato salads and salads made daily.",
+      "cat1.title":"Croquettes","cat1.sub":"4 pieces · contain gluten and dairy",
+      "cat2.title":"Filo Parcels","cat2.sub":"3 pieces",
+      "cat3.title":"Crispy Rolls","cat3.sub":"3 pieces",
+      "cat4.title":"Potato Salads",
+      "cat5.title":"Salads",
+      "d1.name":"Oxtail","d2.name":"Pork cheek in port wine","d3.name":"Iberian secreto with honey",
+      "d4.name":"Meat & vegetable stew","d5.name":"Iberian ham","d6.name":"Wild mushroom",
+      "d7.name":"Camembert, pistachios and tomato jam","d8.name":"Roquefort with walnuts",
+      "d9.name":"Bacon, cream cheese, leek",
+      "d10.name":"Russian salad","d10.desc":"Potato, tuna, carrot, boiled egg, mayonnaise.",
+      "d11.name":"Octopus","d11.desc":"Octopus, potato, garlic, paprika, mayonnaise.",
+      "d12.name":"Dressed potatoes","d12.desc":"Potato, red onion, boiled egg, parsley.",
+      "d13.name":"Seafood","d13.desc":"Prawns, crab stick, lobster, boiled egg, mayonnaise, cocktail sauce.",
+      "d14.name":"Salmorejo","d14.desc":"Freshly made, with boiled egg, Iberian ham and PX balsamic vinegar.",
+      "d15.name":"Mango & salmon","d15.desc":"Mixed lettuce, mango, feta cheese, smoked salmon, mango and red berry coulis.",
+      "d16.name":"Chicken","d16.desc":"Mixed lettuce, cured cheese, breaded chicken, bacon, tomato, cocktail sauce, walnuts, PX balsamic.",
+      "d17.name":"Caesar","d17.desc":"Mixed lettuce, cured cheese, breaded chicken, bacon, croutons, Caesar dressing.",
+      "d18.name":"\"De Costra\"","d18.desc":"Mixed lettuce, Russian salad, seafood salad, corn-crusted king prawns, mango, mango coulis, cocktail sauce.",
+      "d19.name":"Goat cheese & fig jam","d19.desc":"Mixed lettuce, goat cheese roll, fig jam, mixed nuts.",
+      "tag.gluten":"Gluten","tag.dairy":"Dairy","tag.egg":"Egg","tag.fish":"Fish",
+      "tag.sulfites":"Sulphites","tag.crustacean":"Crustaceans","tag.nuts":"Nuts","tag.peanuts":"Peanuts",
+      "footnote":"All our dishes are freshly prepared every day, with fresh produce.",
+      "qr.title":"Take the menu with you",
+      "qr.desc":"Scan this code with your phone to see the menu any time, in Spanish or English.",
+      "qr.print":"Print table sign",
+      "footer.made":"Bar La Hora del Puerto"
+    }
+  };
+
+  function setLang(lang){
+    document.documentElement.lang = lang;
+    document.getElementById('btn-es').classList.toggle('active', lang==='es');
+    document.getElementById('btn-en').classList.toggle('active', lang==='en');
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if(i18n[lang][key] !== undefined){ el.textContent = i18n[lang][key]; }
+    });
+    document.getElementById('print-line').textContent =
+      lang==='es' ? 'Escanea para ver la carta' : 'Scan to see the menu';
+    try{ localStorage.setItem('menuLang', lang); }catch(e){}
+  }
+
+  function printTableCard(){ window.print(); }
+
+  (function init(){
+    let startLang = 'es';
+    try{
+      const saved = localStorage.getItem('menuLang');
+      if(saved){ startLang = saved; }
+      else if(navigator.language && navigator.language.toLowerCase().indexOf('es') !== 0){ startLang = 'en'; }
+    }catch(e){}
+    setLang(startLang);
+
+    try{
+      const url = window.location.href;
+      new QRCode(document.getElementById('qrcode'), {
+        text:url, width:176, height:176, colorDark:"#12212F", colorLight:"#ffffff",
+        correctLevel:QRCode.CorrectLevel.M
+      });
+      new QRCode(document.getElementById('qrcode-print'), {
+        text:url, width:220, height:220, colorDark:"#12212F", colorLight:"#ffffff",
+        correctLevel:QRCode.CorrectLevel.M
+      });
+    }catch(e){
+      document.getElementById('qrcode').textContent = window.location.href;
+    }
+  })();
+</script>
+</body>
+</html>
